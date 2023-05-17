@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Facebook Login JavaScript Example</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+        <script>
+            function statusChangeCallback(response) {
+                if (response.status === 'connected') {
+                    testAPI();
+                } else {
+                    FB.login(function(response) {
+                        console.log(response);
+                    });
+                    document.getElementById('status').innerHTML = 'Please log into this webpage.';
+                }
+            }
+
+            function checkLoginState() {
+                FB.getLoginStatus(function(response) {
+                    console.log(response);
+                    statusChangeCallback(response);
+                });
+            }
+
+            function fbLogout() {
+                FB.logout(function(response) {
+                    console.log(response);
+                });
+            }
+
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId      : '797734838368398',
+                    cookie     : true,
+                    xfbml      : true,
+                    version    : 'v16.0'
+                });
+            };
+
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            } (document, 'script', 'facebook-jssdk'));
+
+            function testAPI() {
+                console.log('Welcome!  Fetching your information.... ');
+                FB.api('/me', function(response) {
+                  console.log(response);
+                  console.log('Successful login for: ' + response.name);
+                  document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
+                });
+            }
+        </script>
+        
+        <p>Facebook Login</p>
+
+        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button>
+        <br />
+        <br />
+        
+        <button type="button" onclick="checkLoginState();">
+            Check status
+        </button>
+        <br />
+        <br />
+
+        <button type="button" onclick="fbLogout();">
+            Log out
+        </button>
+        <br />
+        
+        <div id="status">
+        </div>
+    </body>
+</html>

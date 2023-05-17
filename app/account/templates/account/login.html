@@ -1,0 +1,15 @@
+{% extends 'account/index.html' %}
+{% load static %}
+
+{% block content %}
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        {{ form.as_p }}
+        <input type="submit" value="se connecter" />
+    </form>
+{% endblock content %}
